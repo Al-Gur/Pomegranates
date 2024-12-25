@@ -27,7 +27,7 @@ public class PomegranateAppl {
                                 pomegranates.add(pomegranate);
                             });
                     box.setGranates(pomegranates);
-                    box.setName("Box " + (boxes.size() + 1) + " with " + pomegranates.size() + " pomegranates");
+                    box.setName("Box " + (boxes.size() + 1) + " (" + pomegranates.size() + " pomegranates)");
                     boxes.add(box);
                 });
 
