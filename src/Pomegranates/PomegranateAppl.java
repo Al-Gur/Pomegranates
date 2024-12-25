@@ -1,9 +1,7 @@
 package Pomegranates;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PomegranateAppl {
     public static void main(String[] args) {
@@ -37,23 +35,16 @@ public class PomegranateAppl {
                 .count();
         System.out.println("seedCount = " + seedCount);
 
-        long maxSeedsInBox = boxes.stream()
-                .map(box ->
-                        box.getGranates().stream()
-                                .map(Pomegranate::getSeeds)
-                                .flatMap(Collection::stream)
-                                .count()
-                ).reduce(0L, (acc, s) -> acc > s ? acc : s);
+        Map<Integer, List<Box>> countedBoxes = boxes.stream()
+                .collect(Collectors.groupingBy(box ->
+                                (int) ((Box) box).getGranates().stream()
+                                        .map(Pomegranate::getSeeds)
+                                        .flatMap(Collection::stream)
+                                        .count()
+                        )
+                );
+        int maxSeedsInBox = Collections.max(countedBoxes.keySet());
         System.out.println("maxSeedsInBox = " + maxSeedsInBox);
-
-        boxes.stream()
-                .filter(box ->
-                        box.getGranates().stream()
-                                .map(Pomegranate::getSeeds)
-                                .flatMap(Collection::stream)
-                                .count() == maxSeedsInBox
-                )
-                .map(Box::getName)
-                .forEach(System.out::println);
+        countedBoxes.get(maxSeedsInBox).forEach(box-> System.out.println(box.getName()));
     }
 }
